@@ -1,5 +1,4 @@
-﻿using System;
-using Business.Factories;
+﻿using Business.Factories;
 using Business.Helpers;
 using Business.Models;
 using Data.Repositories;
@@ -7,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services;
 
-public class BookingService(BookingRepository bookingRepository) : IBookingService
+public class BookingService(BookingRepository bookingRepository, InvoiceNumberGenerator invoiceNumberGenerator) : IBookingService
 {
     private readonly BookingRepository _bookingRepository = bookingRepository;
+    private readonly InvoiceNumberGenerator _invoiceNumberGenerator = invoiceNumberGenerator;
 
-    public async Task<int> CreateBookingAsync(CreateBookingModel model)
+    public async Task<BookingServiceResultModel> CreateBookingAsync(CreateBookingModel model)
     {
-        var codes = new List<string>();
-
+        var voucherCodes = new List<string>();
         foreach (var ticket in model.Tickets)
         {
             string voucherCode;
@@ -25,15 +24,16 @@ public class BookingService(BookingRepository bookingRepository) : IBookingServi
                 voucherCode = random.Next(100000, 999999).ToString();
             } while (await _bookingRepository.VoucherCodeExistsAsync(voucherCode));
 
-            codes.Add(voucherCode);
+            voucherCodes.Add(voucherCode);
         }
+        var invoiceNumber = await _invoiceNumberGenerator.GenerateInvoiceNumberAsync();
 
-        var bookingEntity = BookingFactory.Create(model, codes);
+        var bookingEntity = BookingFactory.Create(model, voucherCodes, invoiceNumber);
         var result = await _bookingRepository.AddEntityAsync(bookingEntity);
         if (result == false)
-            return 500;
+            return new BookingServiceResultModel { Success = false, Message = "Failed to create booking." };
 
-        return 201;
+        return new BookingServiceResultModel { Success = true, Message = "Booking created successfully." };
     }
 
     public async Task<IEnumerable<BookingModel>> GetBookingsAsync(string customerId)

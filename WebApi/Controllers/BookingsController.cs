@@ -10,11 +10,11 @@ public class BookingsController(IBookingService bookingService) : ControllerBase
 {
     private readonly IBookingService _bookingService = bookingService;
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateBookingAsync(CreateBookingModel model)
     {
         var result = await _bookingService.CreateBookingAsync(model);
-        return result == 201 ? Ok(result) : BadRequest(result);
+        return result.Success ? Ok(result) : StatusCode(500, new { error = result.Error });
     }
 
     [HttpGet("customer/{customerId}")]

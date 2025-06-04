@@ -5,7 +5,7 @@ namespace Business.Factories;
 
 public static class BookingFactory
 {
-    public static BookingEntity Create(CreateBookingModel model, List<string> codes)
+    public static BookingEntity Create(CreateBookingModel model, List<string> codes, string invoiceNumber)
     {
         int codeIndex = 0;
 
@@ -13,21 +13,20 @@ public static class BookingFactory
         {
             EventId = model.EventId,
             EventName = model.EventName,
-            BookingDate = DateTime.UtcNow,
-            Customer = new CustomerEntity
+            BookingDate = DateTime.Now,
+            CustomerId = model.CustomerId,
+            Invoice = new InvoiceEntity
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Address = new CustomerAddressEntity
-                {
-                    StreetName = model.StreetName,
-                    PostalCode = model.PostalCode,
-                    City = model.City
-                }
+                InvoiceNumber = invoiceNumber,
+                Created = DateTime.Now,
+                ExpiryDate = DateTime.Now.AddDays(30),
+                Amount = model.Invoice!.Amount,
+                Status = false,
             },
             Tickets = model.Tickets.SelectMany(t => Enumerable.Range(0, t.Quantity).Select(_ => new TicketEntity
             {
+                HolderFirstName = t.HolderFirstName,
+                HolderLastName = t.HolderLastName,
                 Type = t.Type,
                 Price = t.Price,
                 EVoucher = codes[codeIndex++]

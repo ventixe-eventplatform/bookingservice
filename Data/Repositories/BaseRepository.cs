@@ -9,7 +9,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
     protected readonly DataContext _context;
     protected readonly DbSet<TEntity> _dbSet;
 
-    protected BaseRepository(DataContext context, DbSet<TEntity> dbSet)
+    protected BaseRepository(DataContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();
@@ -29,7 +29,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
             return false;
         }
     }
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeExpression = null)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null!, Func<IQueryable<TEntity>, IQueryable<TEntity>>? includeExpression = null)
     {
         try
         {

@@ -10,12 +10,18 @@ public class TicketEntity
     public string TicketId { get; set; } = Guid.NewGuid().ToString();
 
     [Column(TypeName = "nvarchar(50)")]
-    public string Type { get; set; } = null!;
-
-    [Column(TypeName = "nvarchar(18,2)")]
-    public decimal Price { get; set; }
+    public string HolderFirstName { get; set; } = null!;
 
     [Column(TypeName = "nvarchar(50)")]
+    public string HolderLastName { get; set; } = null!;
+
+    [Column(TypeName = "nvarchar(50)")]
+    public string Type { get; set; } = null!;
+
+    [Column(TypeName = "decimal(10,2)")]
+    public decimal Price { get; set; }
+
+    [Column(TypeName = "nvarchar(60)")]
     public string EVoucher { get; set; } = null!;
     public string BookingId { get; set; } = null!;
     [ForeignKey(nameof(BookingId))]
