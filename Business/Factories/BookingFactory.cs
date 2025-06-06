@@ -41,6 +41,7 @@ public static class BookingFactory
             BookingId = entity.BookingId,
             EventId = entity.EventId,
             EventName = entity.EventName,
+            BookingDate = entity.BookingDate,
             Tickets = entity.Tickets.Select(x => new TicketModel
             {
                 Id = x.TicketId,
