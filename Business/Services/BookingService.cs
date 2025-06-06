@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services;
 
-public class BookingService(BookingRepository bookingRepository, InvoiceNumberGenerator invoiceNumberGenerator) : IBookingService
+public class BookingService(IBookingRepository bookingRepository, InvoiceNumberGenerator invoiceNumberGenerator) : IBookingService
 {
-    private readonly BookingRepository _bookingRepository = bookingRepository;
+    private readonly IBookingRepository _bookingRepository = bookingRepository;
     private readonly InvoiceNumberGenerator _invoiceNumberGenerator = invoiceNumberGenerator;
 
     public async Task<BookingServiceResultModel> CreateBookingAsync(CreateBookingModel model)
