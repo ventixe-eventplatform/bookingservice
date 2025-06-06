@@ -4,5 +4,5 @@ namespace Data.Repositories;
 
 public interface IInvoiceRepository : IBaseRepository<InvoiceEntity>
 {
-    Task<InvoiceEntity> GetLastInvoiceNumberAsync();
+    Task<InvoiceEntity?> GetLastInvoiceNumberAsync();
 }

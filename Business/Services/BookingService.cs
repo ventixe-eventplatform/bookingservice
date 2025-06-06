@@ -31,7 +31,7 @@ public class BookingService(IBookingRepository bookingRepository, InvoiceNumberG
         var bookingEntity = BookingFactory.Create(model, voucherCodes, invoiceNumber);
         var result = await _bookingRepository.AddEntityAsync(bookingEntity);
         if (result == false)
-            return new BookingServiceResultModel { Success = false, Message = "Failed to create booking." };
+            return new BookingServiceResultModel { Success = false, Error = "Failed to create booking." };
 
         return new BookingServiceResultModel { Success = true, Message = "Booking created successfully." };
     }

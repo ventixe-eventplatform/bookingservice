@@ -5,12 +5,12 @@ namespace Data.Repositories;
 
 public class InvoiceRepository(DataContext context) : BaseRepository<InvoiceEntity>(context), IInvoiceRepository
 {
-    public async Task<InvoiceEntity> GetLastInvoiceNumberAsync()
+    public async Task<InvoiceEntity?> GetLastInvoiceNumberAsync()
     {
         var entity = await _context.Invoices.OrderByDescending(i => i.Id).FirstOrDefaultAsync();
 
         if (entity == null)
-            throw new Exception();
+            return null!;
 
         return entity;
     }
