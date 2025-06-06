@@ -8,6 +8,4 @@ public class TicketModel
     public string Type { get; set; } = null!;
     public decimal Price { get; set; }
     public string EVoucher { get; set; } = null!;
-    public string BookingId { get; set; } = null!;
-    public BookingModel BookingModel { get; set; } = null!;
 }

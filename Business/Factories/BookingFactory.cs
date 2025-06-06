@@ -47,6 +47,8 @@ public static class BookingFactory
                 Type = x.Type,
                 Price = x.Price,
                 EVoucher = x.EVoucher,
+                HolderFirstName= x.HolderFirstName,
+                HolderLastName= x.HolderLastName,
             }).ToList()
         };
     }

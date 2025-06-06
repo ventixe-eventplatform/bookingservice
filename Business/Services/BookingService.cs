@@ -16,15 +16,18 @@ public class BookingService(IBookingRepository bookingRepository, InvoiceNumberG
         var voucherCodes = new List<string>();
         foreach (var ticket in model.Tickets)
         {
-            string voucherCode;
-            var random = new Random();
-
-            do
+            for(int i = 0; i < ticket.Quantity; i++)
             {
-                voucherCode = random.Next(100000, 999999).ToString();
-            } while (await _bookingRepository.VoucherCodeExistsAsync(voucherCode));
+                string voucherCode;
+                var random = new Random();
 
-            voucherCodes.Add(voucherCode);
+                do
+                {
+                    voucherCode = random.Next(100000, 999999).ToString();
+                } while (await _bookingRepository.VoucherCodeExistsAsync(voucherCode));
+
+                voucherCodes.Add(voucherCode);
+            }
         }
         var invoiceNumber = await _invoiceNumberGenerator.GenerateInvoiceNumberAsync();
 
